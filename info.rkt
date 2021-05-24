@@ -13,6 +13,7 @@
 ;; Dependencies
 (define deps
   '("base"
+    "adjutor"
     "typed-racket-lib"
     "gregor-lib"))
 

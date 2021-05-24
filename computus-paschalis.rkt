@@ -2,6 +2,8 @@
 
 (require (for-syntax syntax/parse))
 
+(provide year->easter/values)
+
 (module+ test
   (require rackunit
            gregor))
