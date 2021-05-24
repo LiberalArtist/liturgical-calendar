@@ -7,9 +7,33 @@
          "computus-paschalis.rkt")
 
 (provide (contract-out
-          [year->easter
+          [year->advent-start
+           (-> exact-positive-integer?
+               (and/c date? sunday?))]
+          [year->christmas
            (-> exact-positive-integer?
                date?)]
+          [year->epiphany
+           (-> exact-positive-integer?
+               date?)]
+          [year->candlemas
+           (-> exact-positive-integer?
+               date?)]
+          [year->ash-wednesday
+           (-> exact-positive-integer?
+               (and/c date? wednesday?))]
+          [year->easter
+           (-> exact-positive-integer?
+               (and/c date? sunday?))]
+          [year->ascension-thursday
+           (-> exact-positive-integer?
+               (and/c date? thursday?))]
+          [year->pentecost
+           (-> exact-positive-integer?
+               (and/c date? sunday?))]
+          [year->trinity-sunday
+           (-> exact-positive-integer?
+               (and/c date? sunday?))]
           ))
 
 (define (year->easter y)
@@ -43,7 +67,7 @@
 (define (year->christmas y)
   (date y 12 25))
 
-(define (year->advent1 y)
+(define (year->advent-start y)
   (define xmas (year->christmas y))
   (match (->wday xmas)
     [0

@@ -22,5 +22,6 @@
     "racket-doc"
     "adjutor"
     "gregor-doc"
+    "at-exp-lib"
     "rackunit-lib"))
 
