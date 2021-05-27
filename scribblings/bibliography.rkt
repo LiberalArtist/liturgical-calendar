@@ -1,62 +1,35 @@
 #lang at-exp racket
 
-(require scriblib/autobib)
+(require scriblib/autobib
+         scribble/manual)
 
 (provide ~cite
          citet
          generate-bibliography
          in-bib
+         gregor-doc
          bcp
          bien
          wallis
          meeus)
 
-(define author+date-style%
-  (class object%
-    (define-syntax-rule (methods (name arg ...) ...)
-      (begin (define/public (name arg ...)
-               (send author+date-style name arg ...))
-             ...))
-    (methods 
-     (bibliography-table-style)
-     (entry-style)
-     (disambiguate-date?)
-     (collapse-for-date?)
-     (get-cite-open)
-     (get-cite-close)
-     (get-group-sep)
-     (get-item-sep)
-     (render-citation date-cite i)
-     (render-author+dates author dates)
-     (bibliography-line i e))
-    (super-new)))
-
-(require racket/gui)
-(define debug-out
-  (let ([f (new frame% [label "output"])]
-      [ed (new text%)])
-  (new editor-canvas%
-       [parent f]
-       [editor ed])
-  (send f show #t)
-  (open-output-text-editor ed)))
 
 
-(define author+date-custom-style-hack
-  (new (class author+date-style%
-         (define/override (render-author+dates author dates)
-           (pretty-print (list author dates) debug-out)
-           (error)
-           (super render-author+dates author dates))
-         (super-new))))
-         
+(define-cite ~cite citet generate-bibliography)
 
-
-(define-cite ~cite citet generate-bibliography
-  #:style author+date-custom-style-hack)
-
-
+(define gregor-doc
+  '(lib "gregor/scribblings/gregor.scrbl"))
 ;(in-bib orig where)
+
+;; TODO:
+;;   - https://doi.org/10.1484/J.VIATOR.2.300394
+;;   - https://www.jstor.org/stable/42974022
+;;   - https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750
+;;   - https://en.wikipedia.org/wiki/Christopher_Clavius
+;;   - https://en.wikipedia.org/wiki/Aloysius_Lilius
+;;   - DMLBS s.v. "computus"
+;;   - https://web.archive.org/web/20150907215917/http://www.merlyn.demon.co.uk/estr-bcp.htm
+;;   - https://www.assa.org.au/edm
 
 (define bien
   (make-bib
@@ -98,11 +71,18 @@
   (make-bib
    #:is-book? #t
    #:title "The Book of Common Prayer"
-   #:author (org-author-name "The Episcopal Church")
+   #:author (org-author-name "Episcopal Church")
    #:date 2007
-   ;#:note
-   #:url "https://bcponline.org" ;"https://perma.cc/BCC2-C9CY"
    #:location
    (book-location
     #:edition 1979
-    #:publisher "New York: Church Publishing")))
+    #:publisher "New York: Church Publishing")
+   #:url "https://perma.cc/BCC2-C9CY"
+   #:note @elem[" "]{(PDF).
+ Web version at @url["https://bcponline.org"].
+ See in particular “The Calendar of the Church Year,” pp. 15--33
+ (@link["https://bcponline.org/General/calendar.html"]{web}),
+ and “Tables and Rules for Finding
+ the Date of Easter Day,” pp. 880--885
+ (@link["https://bcponline.org/Misc/tables.html"]{web}).
+ }))

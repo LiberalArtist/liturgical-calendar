@@ -11,10 +11,20 @@
                      gregor/period
                      gregor))
 
+The @racketmodname[liturgical-calendar] library provides functions
+to compute the dates of Easter and other Christian holidays.
+It uses the representation of @seclink[#:doc gregor-doc "date"]{dates}
+from @other-doc[gregor-doc].
+Currently, @racketmodname[liturgical-calendar] supports the calendar
+used primarily by churches originating in the Western half of the
+Roman empire: see the @seclink["Introduction"]{introduction} for details.
 
-Neque porro quisquam est qui dolorem ipsum quia dolor sit amet.
 
-@other-doc['(lib "gregor/scribblings/gregor.scrbl")]
+@(local-table-of-contents)
+
+@section{Introduction}
+
+@other-doc[gregor-doc]
 
 @citet[bcp]
 
@@ -23,5 +33,8 @@ Neque porro quisquam est qui dolorem ipsum quia dolor sit amet.
 @citet[bien]
 
 @citet[wallis]
+
+@section{Reference}
+
 
 @(generate-bibliography)
