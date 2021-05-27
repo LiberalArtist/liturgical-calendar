@@ -16,6 +16,8 @@ Neque porro quisquam est qui dolorem ipsum quia dolor sit amet.
 
 @other-doc['(lib "gregor/scribblings/gregor.scrbl")]
 
+@citet[bcp]
+
 @citet[meeus]
 
 @citet[bien]
