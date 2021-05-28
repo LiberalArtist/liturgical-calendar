@@ -1,24 +1,41 @@
 on: [push, pull_request]
 name: CI
+env:
+  RKT_PKG: liturgical-calendar
 jobs:
   build:
-    name: "Build on Racket '${{ matrix.racket-version }}' (${{ matrix.racket-variant }})"
+    name: "Build on Racket '${{ matrix.racket-version }}'"
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        racket-version: ["stable", "current"]
-        racket-variant: ["BC", "CS"]
+        racket-version:
+          - "stable"
+          - "current"
+          - "8.0"
+          - "7.7"
     steps:
-      - uses: actions/checkout@v2
-      - uses: Bogdanp/setup-racket@v0.12
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install Racket
+        uses: Bogdanp/setup-racket@v1.3.1
         with:
-          architecture: x64
-          distribution: full
-          variant: ${{ matrix.racket-variant }}
           version: ${{ matrix.racket-version }}
-      - name: Installing liturgical-calendar and its dependencies
-        run: raco pkg install --no-docs --auto --name liturgical-calendar
-      - name: Compiling liturgical-calendar and building its docs
-        run: raco setup --check-pkg-deps --unused-pkg-deps liturgical-calendar
-      - name: Testing liturgical-calendar
-        run: raco test -x -p liturgical-calendar
+          architecture: "x64"
+          distribution: "full"
+      - name: Install Package and its Dependencies
+        run: raco pkg install --auto --batch --name $RKT_PKG
+      - name: Run Tests
+        run: raco test -x -p $RKT_PKG
+      - name: Check Package Dependencies
+        run: raco setup --check-pkg-deps --pkgs $RKT_PKG
+# ================================================================
+# NOTES:
+# ------
+# Do I want `--unused-pkg-deps`?
+# Try to build with "minimal" on one job, like "stable" (cs).
+# I would test `racket-variant: "BC"` if I required Racket 8.0.
+# On Travis, I had this:
+###after_success:
+### - raco setup --check-pkg-deps --pkgs adjutor
+### - raco pkg install --auto cover cover-coveralls
+### - raco cover -b -f coveralls -d $TRAVIS_BUILD_DIR/coverage .
